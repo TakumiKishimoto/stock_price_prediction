@@ -96,13 +96,6 @@ class My_rnn_net(nn.Module):
         self.input_size = input_size #入力データ(x)
         self.hidden_dim = hidden_dim #隠れ層データ(hidden)
         self.n_layers = n_layers #RNNを「上方向に」何層重ねるか？の設定 ※横方向ではない
-        """
-        PyTorchのRNNユニット。batch_first=Trueでバッチサイズを最初にくるように設定
-        また、先程示した図ではRNN_cellが複数あったがここではRNNが1個しかない。
-　　　　 つまりこの「nn.RNN」は複数のRNN_cellをひとまとめにしたものである。
-　　　　 ※シーケンシャルデータと初期値のhiddenだけ入れてあげれば内部で勝手に計算してくれる
-　　　　 ※出力部は各時刻毎に出力されるが、下で述べているように最後の時刻しか使用しない
-        """
         self.rnn = nn.RNN(input_size, hidden_dim, n_layers, batch_first=True)
         self.fc = nn.Linear(hidden_dim, output_size) #全結合層でhiddenからの出力を1個にする
 
@@ -222,12 +215,3 @@ plt.plot(range(len(predicted_test_plot)-1), pd.DataFrame(predicted_test_plot)[:-
 plt.legend()
 plt.show()
 
-# #tensor化
-# predicted_test_plot = torch.tensor(predicted_test_plot, dtype=torch.float) 
-# test = torch.tensor(test, dtype=torch.float) 
-
-# #評価
-# criterion = RMSELoss()
-# loss = criterion(predicted_test_plot ,test)
-
-# print(f'RMSE:{loss}')
