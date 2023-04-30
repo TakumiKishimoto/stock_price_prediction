@@ -61,7 +61,7 @@ plt.ylabel("stock price($)")
 plt.title(f"{ticker}'s stock price")
 # plt.show()
 
-##################################################################################################
+
 #dataset作成
 
 train_size = int(len(df_scaled) * 0.80) #学習サイズ(全範囲の8割)
@@ -130,8 +130,8 @@ summary(net, (batch_size, 10, 1))
 loss_fnc = nn.MSELoss() #損失関数はMSE
 optimizer = optim.Adam(net.parameters(), lr=0.001) #オプティマイザはAdam
 loss_record = [] #lossの推移記録用
-device = torch.device("cuda:0" if torch.cuda. is_available() else "cuda")  #デバイス(GPU or CPU)設定 
-epochs = 200 #エポック数
+device = torch.device("cuda:0" if torch.cuda. is_available() else "cpu")  #デバイス(GPU or CPU)設定 
+epochs = 10 #エポック数
 
 net.to(device) #モデルをGPU(CPU)へ
 
@@ -162,10 +162,6 @@ for i in range(epochs+1):
             x = x.to(device).float() #GPUへ
             y = net(x) #予測
             y = y.to('cpu') #結果をCPUへ戻す
-            """
-            もっと綺麗なやり方あるかもですが、次のループで値をずらす為の部分。
-            t=0～9の予測が終了 ⇒ t=1～10で予測させたいのでt=10を追加する・・・を繰り返す
-            """
             if k <= n_sample-2: 
                 input_train.append(input_data[k+1][9].item())
             predicted_train_plot.append(y[0].item())
@@ -183,7 +179,7 @@ test_data = np.zeros((n_sample_test, time_stemp, 1))
 correct_test_data = np.zeros((n_sample_test, 1))
 
 
-#t=76以降のデータを抜粋してシーケンシャルデータとして格納していく
+#t=train_size - time_stemp 以降のデータを抜粋してシーケンシャルデータとして格納していく
 start_test = train_size - time_stemp 
 for i in range(n_sample_test-1):
     test_data[i] = df_scaled[start_test+i : start_test+i+time_stemp].reshape(-1, 1)
@@ -209,17 +205,29 @@ for k in range(n_sample_test):
          input_test.append(test_data[k+1][9].item())
     predicted_test_plot.append(y[0].item())
 
+predicted_test_plot = scaler.inverse_transform(pd.DataFrame(predicted_test_plot))
+test = scaler.inverse_transform(pd.DataFrame(test))
+
+
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+# MSEとMAEを計算する
+mse = mean_squared_error(test, predicted_test_plot)
+mae = mean_absolute_error(test, predicted_test_plot)
+
+print("MSE: {:.4f}".format(mse))
+print("MAE: {:.4f}".format(mae))
+
 plt.plot(range(len(test)), test, label='Correct')
-plt.plot(range(len(predicted_test_plot)), predicted_test_plot , label='Predicted')
+plt.plot(range(len(predicted_test_plot)-1), pd.DataFrame(predicted_test_plot)[:-1], label='Predicted')
 plt.legend()
 plt.show()
 
-#tensor化
-predicted_test_plot = torch.tensor(predicted_test_plot, dtype=torch.float) 
-test = torch.tensor(test, dtype=torch.float) 
+# #tensor化
+# predicted_test_plot = torch.tensor(predicted_test_plot, dtype=torch.float) 
+# test = torch.tensor(test, dtype=torch.float) 
 
-#評価
-criterion = RMSELoss()
-loss = criterion(predicted_test_plot ,test)
+# #評価
+# criterion = RMSELoss()
+# loss = criterion(predicted_test_plot ,test)
 
-print(f'RMSE:{loss}')
+# print(f'RMSE:{loss}')
