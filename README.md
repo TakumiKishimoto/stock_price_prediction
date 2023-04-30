@@ -1,10 +1,10 @@
 # stock_price_prediction
 
-
+このプロジェクトは、PyTorchを使用して株価の時系列データを予測するモデルを構築することを目的としています。
 
 # 株価予測モデル
 
-このプロジェクトは、PyTorchを使用して株価の時系列データを予測するモデルを構築することを目的としています。
+
 ![lstm](https://user-images.githubusercontent.com/132123636/235346784-8fad7e7c-fd59-4897-a472-9c1a7f369cb7.png)
 ## 動作環境
 
