@@ -1,5 +1,5 @@
 # stock_price_prediction
-https://github.com/TakumiKishimoto/stock_price_prediction/issues/1#issue-1689852543
+
 
 
 # 株価予測モデル
