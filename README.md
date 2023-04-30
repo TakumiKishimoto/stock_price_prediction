@@ -31,7 +31,7 @@
 
 ## モデル
 
-本プロジェクトでは、RNN(Recurrent Neural Network),LSTM（Long Short-Term Memory),Transformerの3つのネットワークを使用して株価の予測を行いました。
+本プロジェクトでは、RNN(Recurrent Neural Network),LSTM（Long Short-Term Memory),Transformerの3つのネットワークを使用してそれぞれ株価の予測を行いました。
 
 
 ## 学習
