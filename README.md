@@ -10,12 +10,12 @@
 
 以下の環境で動作確認済みです。
 
-- Python 3.7.6
-- PyTorch 1.9.0
-- numpy 1.19.2
-- pandas 1.1.3
-- matplotlib 3.3.2
-- scikit-learn 0.24.1
+- Python 3.7.16
+- torch 1.13.1
+- numpy 1.21.6
+- pandas 1.3.5
+- matplotlib 3.5.3
+- scikit-learn 1.0.2
 
 ## データセット
 
@@ -31,18 +31,8 @@
 
 ## モデル
 
-本プロジェクトでは、LSTM（Long Short-Term Memory）ネットワークを使用して株価の予測を行いました。LSTMは、時系列データの学習に適したニューラルネットワークであり、長期的な依存関係を考慮することができます。
+本プロジェクトでは、RNN(Recurrent Neural Network),LSTM（Long Short-Term Memory),Transformerの3つのネットワークを使用して株価の予測を行いました。
 
-LSTMのアーキテクチャは、以下のようになっています。
-
-```
-LSTM(
-  (lstm): LSTM(1, 64, num_layers=2, batch_first=True)
-  (fc): Linear(in_features=64, out_features=1, bias=True)
-)
-```
-
-入力は、1つの特徴量（終値）のみです。LSTMの出力は、64次元のベクトルであり、全結合層を介して1つの値に変換されます。
 
 ## 学習
 
@@ -58,7 +48,7 @@ LSTM(
 - `learning_rate`: 学習率
 - `input_size`: 入力サイズ（特徴量の数）
 - `hidden_size`: 隠れ層のサイズ
-- `num_layers`: LSTMの層数
+- `num_layers`: モデルの層数
 - `batch_size`: バッチサイズ
 
 ## 評価
